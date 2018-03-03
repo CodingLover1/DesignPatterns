@@ -1,5 +1,65 @@
 ### Java 设计模式
 
+#### JDK动态代理
+> jdk动态代理是java.lang.reflect.*包提供的方式，它必须借助一个接口才能
+> 产生代理对象，通过动态代理技术，我们可以在调用一个对象的某个函数之前
+> 插入一个新的服务，或者在之后插入一个新的服务,即它可以通过在不该变一个类
+> 的源代码的情况下，为该类添加新的函数。
+
+```java
+interface HelloWorld{
+    public void sayHelloWorld();
+}
+public class HelloWorldImpl implements HelloWorld{
+    @Override
+    public  void sayHelloWorld(){
+        System.out.println("Hello World!");
+    }
+}
+```
+
+```java
+public class JdkProxyExample implements InvocationHandler {
+    //真实对象
+    private Object target=null;
+
+    /**
+     * 建立代理对象和真实对象的代理关系，并返回代理对象
+     * @param target 真是对象
+     * @return 代理对象
+     */
+    public Object bind(Object target){
+        this.target=target;
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(),target.getClass().getInterfaces(),this);
+    }
+
+    /**
+     * 代理方法的逻辑
+     * @param proxy 代理对象
+     * @param method 
+     * @param args
+     * @return
+     */
+    @Override
+    public Object invoke(Object proxy, Method method,Object[] args)throws Throwable{
+        System.out.println("进入代理对象的逻辑方法");
+        System.out.println("在调度真实对象之前的服务");
+        Object obj=method.invoke(target,args);
+        System.out.println("在调度真实对象之后的服务");
+        return obj;
+    }
+
+    public static void main(String[] args){
+        JdkProxyExample jdkProxyExample=new JdkProxyExample();
+        HelloWorld helloWorld=(HelloWorld)jdkProxyExample.bind(new HelloWorldImpl());
+        helloWorld.sayHelloWorld();
+    }
+}
+
+```
+
+
+
 
 #### 单例模式 (DLC双锁检查机制，线程安全)
 ```java
@@ -118,7 +178,6 @@ public class ProductFactory {
         IProduct product=ProductFactory.createProduct("1");
     }
 }
-
 ```
 
 
