@@ -82,22 +82,27 @@ public class Singleton {
     }
 }
 ```
+
 单例模式最好的一种实现
 ```java
 public class Singleton{
-    public static Singleton=null;
+    public static Singleton instance=null;
     public static Singleton getInstance(){
         return SingletonFactory.getInstance();
     }
     
     private Singleton(){}
     
-    public static class SingletonFactory{
-       public static Singleton getInstanc(){
-            return new Singleton();
-       }
+    private static class SingletonFactory{
+        private static  Singleton singleton=new Singleton();
+        public static Singleton getInstance(){
+            return singleton;
+        }
     }
+
 }
+
+```
 
 #### 观察者模式
 > 观察者模式是一种发布订阅模式
