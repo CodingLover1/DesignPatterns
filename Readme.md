@@ -61,7 +61,7 @@ public class JdkProxyExample implements InvocationHandler {
 
 
 
-#### 单例模式 (DLC双锁检查机制，线程安全)
+#### 单例模式 (DLC双锁检查机制，线程安全，但是这个写法不太好)
 ```java
 public class Singleton {
     public static Singleton instance = null;
@@ -82,6 +82,22 @@ public class Singleton {
     }
 }
 ```
+单例模式最好的一种实现
+```java
+public class Singleton{
+    public static Singleton=null;
+    public static Singleton getInstance(){
+        return SingletonFactory.getInstance();
+    }
+    
+    private Singleton(){}
+    
+    public static class SingletonFactory{
+       public static Singleton getInstanc(){
+            return new Singleton();
+       }
+    }
+}
 
 #### 观察者模式
 > 观察者模式是一种发布订阅模式
